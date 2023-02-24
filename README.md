@@ -1,6 +1,7 @@
 # hybridKV
 
 尝试在分布式数据库架构下，同时使用多种存储引擎混合存储
+架构类似spanner，更接近于tidb
 
 Raft+libevent+Rocksdb+Multi-ART
 
