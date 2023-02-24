@@ -1,5 +1,10 @@
 # hybridKV
 
-尝试在分布式数据库架构下，底层的存储层为多种存储引擎混合存储
+尝试在分布式数据库架构下，同时使用多种存储引擎混合存储
 
-架构 raft+rocksdb
+Raft+libevent+Rocksdb+Multi-ART
+
+Raft：<a>https://github.com/eBay/NuRaft</a>
+libevent: <a>https://github.com/search?q=libevent</a>
+Rocksdb:<a> https://github.com/facebook/rocksdb</a>
+Multi-ART:<a>https://github.com/UncP/aili</a>
