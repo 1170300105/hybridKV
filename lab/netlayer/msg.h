@@ -1,4 +1,5 @@
 #include <string> 
+#include <vector>
 //[kv|put|kvNum|k1|v1|.....|regionId]
 //[kv|get|kvNum|k1|k2|.....|regionId]
 //[kv|delete|kvNum|k1|k2|.....|regionId]
@@ -6,17 +7,23 @@
 //[raft|transferLeader|storeid|regionId]
 //[raft|split|regionId]
 //[raft|destroy|regionId]
+//[pd|transtore|dbtype]
+enum msgType{
+    kvCmd,
+    raftCmd,
+    heartBeat,
+    unkonw
+};
+
 struct msg{
     msgType type;
     std::vector<std::string> msgCmd;
     int regionId;
+
 };
-enum msgType{
-    kvCmd,
-    raftCmd,
-    heartBeat
-};
+
 struct msgHandleResult{
     bool err;
-    std::string result;
+    std::vector<std::string> result;
+
 };

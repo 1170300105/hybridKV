@@ -4,7 +4,6 @@
 
 #include <event.h>
 #include <event2/bufferevent.h>
-#include "msg.h"
 #include "msgHandler.h"
  
 void accept_cb(int fd, short events, void* arg);
@@ -12,10 +11,12 @@ void socket_read_cb(bufferevent* bev, void* arg);
 void event_cb(struct bufferevent *bev, short event, void *arg);
 int tcp_server_init(int port, int listen_num);
 
-msgHandler msghandler;
+msgHandler* msghandler;
 
 int main(int argc, char** argv)
 {
+    printf("start\n");
+    msghandler = new msgHandler;
     int listener = tcp_server_init(12068, 10);
     if( listener == -1 )
     {
@@ -69,15 +70,21 @@ void socket_read_cb(bufferevent* bev, void* arg)
     size_t len = bufferevent_read(bev, msg, sizeof(msg));
  
     msg[len] = '\0';
-    printf("recv the client msg: %s", msg);
+    printf("recv the client msg: %s\n", msg);
     //todo
     std::string s = msg;
     int start = s.find_first_of('[');
     int end = s.find_first_of(']');
-    s = s.substr(start+1,end);
+    s = s.substr(start+1,end-1);
+    printf("cmd :%s\n",s.c_str());
     msgHandleResult r;
-    msghandler.handleMsg(s, &r);
-    bufferevent_write(bev, r.result.c_str() , r.result.length());
+    (*msghandler).handleMsg(s, &r);
+    for(int i = 0;i<r.result.size();i++){
+       bufferevent_write(bev, r.result[i].c_str() , r.result[i].length());
+    }
+    // char reply_msg[4096] = "I have recvieced the msg: ";
+    // std::string r = reply_msg;
+    // bufferevent_write(bev, reply_msg, r.size());
 }
  
  
